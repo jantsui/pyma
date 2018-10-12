@@ -14,7 +14,7 @@ filterwarnings('ignore', category = pymysql.Warning)
 
 seq1="+"
 seq2="<br/>"
-seq3="</td><td>"
+seq3="</td><td class='awrc' style='text-align:left'>"
 
 SYS_PARM_FILTER = (
     'BINLOG_CACHE_SIZE',
@@ -117,13 +117,13 @@ def f_get_parm(p_dbinfo):
 def f_print_parm(p_parm_result):
     print("<p> SYSTEM PARAMETER </p><table border='1' width='100%'><tr>")
     status_title=('parameter_name','value')
-    print("<th>")
+    print("<th class='awrbg' >")
     print(status_title[0].center(30))
-    print("</th><th>",status_title[1].center(58))
+    print("</th><th class='awrbg' >",status_title[1].center(58))
     print("</th></tr>")
 
     for row in p_parm_result:
-      print("<tr><td>",row[0].ljust(30))
+      print("<tr><td class='awrc' style='text-align:left'>",row[0].ljust(30))
       if 'size' in row[0]:
             if int(row[1])>=1024*1024*1024:
                 print(seq3,(str(round(int(row[1])/1024/1024/1024,2))+' G').rjust(58),seq3)
@@ -145,13 +145,13 @@ def f_print_optimizer_switch(p_dbinfo):
     cursor.execute("select variable_value from INFORMATION_SCHEMA.GLOBAL_VARIABLES where upper(variable_name)='OPTIMIZER_SWITCH'")
     rows = cursor.fetchall()
 
-    print("<th>",'switch_name'.center(40),)
-    print("</th><th>",'value'.center(10),seq3)
-    print("</th></tr>\n<tr>")
+    print("<th class='awrbg' >",'switch_name'.center(40),)
+    print("</th><th class='awrbg' >",'value'.center(10))
+    print("</th></tr>\n")
     for row in rows[0][0].split(','):
-        print("<td>",row.split('=')[0].ljust(40),)
-        print(seq3,row.split('=')[1].rjust(10),"</td>")
-    print("</tr>")
+        print("<tr><td class='awrc' style='text-align:left'>",row.split('=')[0].ljust(40),)
+        print(seq3,row.split('=')[1].rjust(10),"</td></tr>")
+    #print("</tr>")
     cursor.close()
     db.close()
     print("</table>")
@@ -197,18 +197,18 @@ def f_print_status(p_before_status,p_after_status):
     print("<p> SESSION STATUS (DIFFERENT) </p><table border='1' width='100%'><tr>")
     status_title=('status_name','before','after','diff')
 
-    print("<th>",status_title[0].center(35),)
-    print("</th><th>",status_title[1].center(15),)
-    print("</th><th>",status_title[2].center(15),)
-    print("</th><th>",status_title[3].center(15),"</th></tr>\n<tr><td>")
+    print("<th class='awrbg' >",status_title[0].center(35),)
+    print("</th><th class='awrbg' >",status_title[1].center(15),)
+    print("</th><th class='awrbg' >",status_title[2].center(15),)
+    print("</th><th class='awrbg' >",status_title[3].center(15),"</th></tr>")
     
     for key in sorted(p_before_status.keys()):
         if p_before_status[key] != p_after_status[key]:
-            print(key.ljust(35))
+            print("<tr><td class='awrc' style='text-align:left'>",key.ljust(35))
             print(seq3,p_before_status[key].rjust(15),)
             print(seq3,p_after_status[key].rjust(15),)
-            print(seq3,str(float(p_after_status[key])-float(p_before_status[key])).rjust(15),"</td>")
-    print("</tr>")
+            print(seq3,str(float(p_after_status[key])-float(p_before_status[key])).rjust(15),"</td></tr>")
+    
     print("</table>")
     
 def f_print_time(p_starttime,p_endtime):
@@ -216,60 +216,58 @@ def f_print_time(p_starttime,p_endtime):
     print(timediff(p_starttime,p_endtime))
 
 def f_print_profiling( p_profiling_detail , p_profiling_summary ):
-    print("<p> SQL PROFILING(DETAIL)</p><table border='1' width='100%'><tr>")
+    print("<p> SQL PROFILING(DETAIL)</p><table border='1' width='100%'>")
     status_title=('state','duration','cpu_user','cpu_sys','bk_in','bk_out','msg_s','msg_r','p_f_ma','p_f_mi','swaps')
-    print("<th>")
-    print("</th><th>",status_title[0].center(30),)
-    print("</th><th>",status_title[1].center(8),)
-    print("</th><th>",status_title[2].center(8),)
-    print("</th><th>",status_title[3].center(8),)
-    print("</th><th>",status_title[4].center(8),)
-    print("</th><th>",status_title[5].center(8),)
-    print("</th><th>",status_title[6].center(8),)
-    print("</th><th>",status_title[7].center(8),)
-    print("</th><th>",status_title[8].center(8),)
-    print("</th><th>",status_title[9].center(8),)
-    print("</th><th>",status_title[10].center(8),seq3)
-    print("</th></tr>\n<tr><td>")
-
+    print("<tr><th class='awrbg' >",status_title[0].center(30))
+    print("</th><th class='awrbg' >",status_title[1].center(8))
+    print("</th><th class='awrbg' >",status_title[2].center(8))
+    print("</th><th class='awrbg' >",status_title[3].center(8))
+    print("</th><th class='awrbg' >",status_title[4].center(8))
+    print("</th><th class='awrbg' >",status_title[5].center(8))
+    print("</th><th class='awrbg' >",status_title[6].center(8))
+    print("</th><th class='awrbg' >",status_title[7].center(8))
+    print("</th><th class='awrbg' >",status_title[8].center(8))
+    print("</th><th class='awrbg' >",status_title[9].center(8))
+    print("</th><th class='awrbg' >",status_title[10].center(8))
+    print("</th></tr>")
+    
+    
     for row in p_profiling_detail:
-        print(row[0].ljust(30))
-        print(seq3,str(row[1]).rjust(8),)
-        print(seq3,str(row[2]).rjust(8),)
-        print(seq3,str(row[3]).rjust(8),)
-        print(seq3,str(row[4]).rjust(8),)
-        print(seq3,str(row[5]).rjust(8),)
-        print(seq3,str(row[6]).rjust(8),)
-        print(seq3,str(row[7]).rjust(8),)
-        print(seq3,str(row[8]).rjust(8),)
-        print(seq3,str(row[9]).rjust(8),)
-        print(seq3,str(row[10]).rjust(8),"</td>")
-    print("+--------------------------------+----------+----------+----------+----------+----------+----------+----------+----------+----------+----------+")
-    print("bk_in:   block_ops_in")
-    print("bk_out:  block_ops_out")
-    print("msg_s:   message sent")
-    print("msg_r:   message received")
-    print("p_f_ma:  page_faults_major")
+        print("<tr><td class='awrc' style='text-align:left'>",row[0].ljust(30))
+        print(seq3,str(row[1]).rjust(8))
+        print(seq3,str(row[2]).rjust(8))
+        print(seq3,str(row[3]).rjust(8))
+        print(seq3,str(row[4]).rjust(8))
+        print(seq3,str(row[5]).rjust(8))
+        print(seq3,str(row[6]).rjust(8))
+        print(seq3,str(row[7]).rjust(8))
+        print(seq3,str(row[8]).rjust(8))
+        print(seq3,str(row[9]).rjust(8))
+        print(seq3,str(row[10]).rjust(8),"</td></tr>")
+    print("</table>")
+    print("bk_in:   block_ops_in<br/>")
+    print("bk_out:  block_ops_out<br/>")
+    print("msg_s:   message sent<br/>")
+    print("msg_r:   message received<br/>")
+    print("p_f_ma:  page_faults_major<br/>")
     print("p_f_mi:  page_faults_minor")
     print("<br/>")
 
-    print("<p> SQL PROFILING(SUMMARY)</p><table border='1' width='100%'><tr>")
+    print("<p> SQL PROFILING(SUMMARY)</p><table border='1' width='100%'>")
     status_title=('state','total_r','pct_r','calls','r/call')
-    print("<th>")
-    print("</th><th>",status_title[0].center(35),)
-    print("</th><th>",status_title[1].center(15),)
-    print("</th><th>",status_title[2].center(10),)
-    print("</th><th>",status_title[3].center(5),)
-    print("</th><th>",status_title[4].center(15),"</th>")
-    print("</tr>\n<tr><td>")
+    print("<tr><th class='awrbg' >",status_title[0].center(35))
+    print("</th><th class='awrbg' >",status_title[1].center(15))
+    print("</th><th class='awrbg' >",status_title[2].center(10))
+    print("</th><th class='awrbg' >",status_title[3].center(5))
+    print("</th><th class='awrbg' >",status_title[4].center(15),"</th>")
+    print("</tr>\n")
 
     for row in p_profiling_summary:
-        print(row[0].ljust(35))
+        print("<tr><td class='awrc' style='text-align:left'>",row[0].ljust(35))
         print(seq3,str(row[1]).rjust(15),)
         print(seq3,str(row[2]).rjust(10),)
         print(seq3,str(row[3]).rjust(5),)
-        print(seq3,str(row[4]).rjust(15),"</td>")
-    print("</tr>")
+        print(seq3,str(row[4]).rjust(15),"</td></tr>")
     print("</table>")
     
 def f_get_sqlplan(p_dbinfo,p_sqltext):
@@ -290,19 +288,19 @@ def f_print_sqlplan(p_sqlplan,p_warning):
     plan_title=('id','select_type','table','type','possible_keys','key','key_len','ref','rows','filtered','Extra')
 
     print("<p> SQL PLAN </p><table border='1' width='100%'><tr>")
-    print("<th>")
+    print("<th class='awrbg' >")
     print(plan_title[0].center(6))
-    print("</th><th>",plan_title[1].center(16),)
-    print("</th><th>",plan_title[2].center(10),)
-    print("</th><th>",plan_title[3].center(10),)
-    print("</th><th>",plan_title[4].center(20),)
-    print("</th><th>",plan_title[5].center(10),)
-    print("</th><th>",plan_title[6].center(10),)
-    print("</th><th>",plan_title[7].center(10),)
-    print("</th><th>",plan_title[8].center(10),)
-    print("</th><th>",plan_title[9].center(10),)
-    print("</th><th>",plan_title[10].center(10),"</th>")
-    print("</tr>\n<tr><td>")
+    print("</th><th class='awrbg' >",plan_title[1].center(16),)
+    print("</th><th class='awrbg' >",plan_title[2].center(10),)
+    print("</th><th class='awrbg' >",plan_title[3].center(10),)
+    print("</th><th class='awrbg' >",plan_title[4].center(20),)
+    print("</th><th class='awrbg' >",plan_title[5].center(10),)
+    print("</th><th class='awrbg' >",plan_title[6].center(10),)
+    print("</th><th class='awrbg' >",plan_title[7].center(10),)
+    print("</th><th class='awrbg' >",plan_title[8].center(10),)
+    print("</th><th class='awrbg' >",plan_title[9].center(10),)
+    print("</th><th class='awrbg' >",plan_title[10].center(10),"</th>")
+    print("</tr>\n<tr><td class='awrc' style='text-align:left'>")
     for row in p_sqlplan:
         print(str(row[0]).rjust(6),)                # id
         print(seq3,row[1].ljust(16),)                    # select_type
@@ -343,7 +341,7 @@ def f_print_sqlplan(p_sqlplan,p_warning):
             if not "float" in str(type(row[10])):
                 print(seq3,row[10].ljust(10),)
             else:
-              print(seq3,"float".ljust(10),)
+              print(seq3,row[10])
         else:
             print(seq3,"NULL".ljust(10),)
         print("</td>")
@@ -351,10 +349,10 @@ def f_print_sqlplan(p_sqlplan,p_warning):
     print("</tr>")
     print("</table>")
 
-    print("<p> OPTIMIZER REWRITE SQL </p>")
+    print("<p> OPTIMIZER REWRITE SQL </p>\n<textarea rows='10' cols='150'>")
     for row in p_warning:
         print(sqlparse.format(row[2],reindent=True, keyword_case='upper',strip_comments=True))
-    print
+    print("</textarea>")
 
 def f_get_table(p_dbinfo,p_sqltext):
     r_tables=[]
@@ -381,15 +379,15 @@ def f_print_tableinfo(p_dbinfo,p_tablename):
     stmt = "select engine,row_format as format,table_rows,avg_row_length as avg_row,round((data_length+index_length)/1024/1024,2) as total_mb,round((data_length)/1024/1024,2) as data_mb,round((index_length)/1024/1024,2) as index_mb from information_schema.tables where table_schema='"+p_dbinfo[3]+"' and table_name='"+p_tablename+"'"
     cursor.execute(stmt)
     rows = cursor.fetchall ()
-    print("<th>",plan_title[0].center(15),)
-    print("</th><th>",plan_title[1].center(10),)
-    print("</th><th>",plan_title[2].center(10),)
-    print("</th><th>",plan_title[3].center(10),)
-    print("</th><th>",plan_title[4].center(10),)
-    print("</th><th>",plan_title[5].center(10),)
-    print("</th><th>",plan_title[6].center(10),)
-    print("</th><th>",plan_title[7].center(10),"</th></tr>\n<tr>")
-    print("<td>")
+    print("<th class='awrbg' >",plan_title[0].center(15),)
+    print("</th><th class='awrbg' >",plan_title[1].center(10),)
+    print("</th><th class='awrbg' >",plan_title[2].center(10),)
+    print("</th><th class='awrbg' >",plan_title[3].center(10),)
+    print("</th><th class='awrbg' >",plan_title[4].center(10),)
+    print("</th><th class='awrbg' >",plan_title[5].center(10),)
+    print("</th><th class='awrbg' >",plan_title[6].center(10),)
+    print("</th><th class='awrbg' >",plan_title[7].center(10),"</th></tr>\n<tr>")
+    print("<td class='awrc' style='text-align:left'>")
     for row in rows:
         print(p_tablename.ljust(15))
         print(seq3,row[0].ljust(10),)
@@ -402,7 +400,7 @@ def f_print_tableinfo(p_dbinfo,p_tablename):
     print("</tr>")
     cursor.close()
     db.close()
-    print("</table>")
+    print("</table><p></p><table border='1' width='100%'><tr>")
 
 def f_print_indexinfo(p_dbinfo,p_tablename):
     plan_title=('index_name','non_unique','seq_in_index','column_name','collation','cardinality','nullable','index_type')
@@ -412,25 +410,25 @@ def f_print_indexinfo(p_dbinfo,p_tablename):
     cursor.execute(stmt)
     rows = cursor.fetchall ()
     if len(rows)>0:
-        print("<th>",plan_title[0].center(15),)
-        print("</th><th>",plan_title[1].center(15),)
-        print("</th><th>",plan_title[2].center(15),)
-        print("</th><th>",plan_title[3].center(15),)
-        print("</th><th>",plan_title[4].center(15),)
-        print("</th><th>",plan_title[5].center(15),)
-        print("</th><th>",plan_title[6].center(15),)
-        print("</th><th>",plan_title[7].center(15),"</th></tr>\n<tr>")
-        print("<td>")
+        print("<th class='awrbg' >",plan_title[0].center(15),)
+        print("</th><th class='awrbg' >",plan_title[1].center(15),)
+        print("</th><th class='awrbg' >",plan_title[2].center(15),)
+        print("</th><th class='awrbg' >",plan_title[3].center(15),)
+        print("</th><th class='awrbg' >",plan_title[4].center(15),)
+        print("</th><th class='awrbg' >",plan_title[5].center(15),)
+        print("</th><th class='awrbg' >",plan_title[6].center(15),)
+        print("</th><th class='awrbg' >",plan_title[7].center(15),"</th></tr>\n")
+ 
         for row in rows:
-            print(row[0].ljust(15))
+            print("<tr><td class='awrc' style='text-align:left'>",row[0].ljust(15))
             print(seq3,str(row[1]).rjust(15),)
             print(seq3,str(row[2]).rjust(15),)
             print(seq3,str(row[3]).rjust(15),)
             print(seq3,str(row[4]).rjust(15),)
             print(seq3,str(row[5]).rjust(15),)
             print(seq3,str(row[6]).rjust(15),)
-            print(seq3,str(row[7]).rjust(15),"</td>")
-        print("</tr>")
+            print(seq3,str(row[7]).rjust(15),"</td></tr>")
+
     cursor.close()
     db.close()
     print("</table>")
@@ -445,28 +443,28 @@ def f_get_mysql_version(p_dbinfo):
     return records[0][0]
 
 def f_print_title(p_dbinfo,p_mysql_version,p_sqltext):
-    print('*'*100)
-    print('*','MySQL SQL Tuning Tools v1.0 (by hanfeng)'.center(96),'*')
-    print('*'*100)
-
-    print
-    print("<p> BASIC INFORMATION </p>")
+    print("<h1 class='awr'>")
+    print("MySQL SQL Tuning Tools v1.0 (by hanfeng) REPORT FOR MySQL".center(96))
+    print("</h1>")
+    print("<a href='https://m.aliyun.com/yunqi/articles/60968'>link</a>")
+    
+    print("<p> BASIC INFORMATION </p><table border='1' width='100%'><tr>")
     title=('server_ip','user_name','db_name','db_version')
-    print("+----------------------+------------+------------+------------+")
-    print(seq2,title[0].center(20),)
-    print(seq2,title[1].center(10),)
-    print(seq2,title[2].center(10),)
-    print(seq2,title[3].center(10),seq2)
-    print("+----------------------+------------+------------+------------+")
-    print(seq2,p_dbinfo[0].center(20),)
-    print(seq2,p_dbinfo[1].center(10),)
-    print(seq2,p_dbinfo[3].center(10),)
-    print(seq2,p_mysql_version.center(10),seq2)
-    print("+----------------------+------------+------------+------------+")
-    print("<br/>")
+    print("<th class='awrbg' >")
+    print(title[0].center(20))
+    print("</th><th class='awrbg' >",title[1].center(10))
+    print("</th><th class='awrbg' >",title[2].center(10))
+    print("</th><th class='awrbg' >",title[3].center(10))
+    print("</th></tr>")
+    print("<tr><td class='awrc' style='text-align:left'>",p_dbinfo[0].center(20))
+    print(seq3,p_dbinfo[1].center(10))
+    print(seq3,p_dbinfo[3].center(10))
+    print(seq3,p_mysql_version.center(10))
+    print("</td></tr>")
+    print("</table>")
     print("<p> ORIGINAL SQL TEXT </p>")
-    print(sqlparse.format(p_sqltext,reindent=True, keyword_case='upper'))
-    print("<br/>")
+    print("<code>",sqlparse.format(p_sqltext,reindent=True, keyword_case='upper'))
+    print("</code>")
 
 '''
 def f_print_table(p_value,p_option):  #p_option "(key-n => title,max_len,align_value)"
@@ -546,6 +544,8 @@ if __name__=="__main__":
 
     mysql_version = f_get_mysql_version(dbinfo)
     
+    print("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>MySQL Tuning Report</title><style type='text/css'>body.awr {font: bold 10pt Arial, Helvetica, Geneva, sans-serif;color: #000;background: #fff}h1.awr {font: bold 20pt Arial, Helvetica, Geneva, sans-serif;color: #369;background-color: #fff;border-bottom: 1px solid #cc9;margin-top: 0pt;margin-bottom: 0pt;padding: 0px 0px 0px 0px}h2.awr {font: bold 18pt Arial, Helvetica, Geneva, sans-serif;color: #369;background-color: #fff;margin-top: 4pt;margin-bottom: 0pt}h3.awr {font: bold 16pt Arial, Helvetica, Geneva, sans-serif;color: #369;background-color: #fff;margin-top: 4pt;margin-bottom: 0pt}li.awr {font: 8pt Arial, Helvetica, Geneva, sans-serif;color: #000;background: #fff}th.awrnobg {font: bold 8pt Arial, Helvetica, Geneva, sans-serif;color: #000;background: #fff;padding-left: 4px;padding-right: 4px;padding-bottom: 2px}th.awrbg {font: bold 8pt Arial, Helvetica, Geneva, sans-serif;color: #fff;background: #06c;padding-left: 4px;padding-right: 4px;padding-bottom: 2px}td.awrnc {font: 8pt Arial, Helvetica, Geneva, sans-serif;color: #000;background: #fff;vertical-align: top}td.awrc {font: 8pt Arial, Helvetica, Geneva, sans-serif;color: #000;background: #ffc;vertical-align: top}td {padding: 5px;}</style></head><body class='awr'>")
+    
     f_print_title(dbinfo,mysql_version,sqltext)
 
     if config.get("option","sys_parm")=='ON':
@@ -582,3 +582,5 @@ if __name__=="__main__":
             f_print_profiling(exec_result['PROFILING_DETAIL'],exec_result['PROFILING_SUMMARY'])
 
         f_print_time(starttime,endtime)
+    print("</body>")
+    
